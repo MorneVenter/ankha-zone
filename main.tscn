@@ -1,0 +1,339 @@
+[gd_scene load_steps=21 format=3 uid="uid://c0nv4m83l1k2f"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_qsgkg"]
+[ext_resource type="PackedScene" uid="uid://by0owl4a4tvxx" path="res://Assets/Scenes/Characters/Ankha/Ankha.tscn" id="1_wb4tj"]
+[ext_resource type="Environment" uid="uid://yi13voxyos3a" path="res://default_env.tres" id="2_gjahs"]
+[ext_resource type="PackedScene" uid="uid://ch5fbhoxrwglk" path="res://Assets/Modules/GrassPatch/grass_patch.tscn" id="3_5am38"]
+[ext_resource type="PackedScene" uid="uid://b4uu1eh7mlbmq" path="res://Assets/Models/Nature/mushroom_blue.blend" id="5_o8jh7"]
+[ext_resource type="PackedScene" uid="uid://b2pfaxmij26os" path="res://Assets/Models/Nature/mushroom_log.blend" id="6_ifq0w"]
+[ext_resource type="PackedScene" uid="uid://d2233pydg4tta" path="res://Assets/Models/Nature/mushroom_log_red.blend" id="7_kxsb4"]
+[ext_resource type="PackedScene" uid="uid://cg5m7apq8rs5e" path="res://Assets/Models/Nature/mushroom_red_small.blend" id="8_xadp3"]
+[ext_resource type="AudioStream" uid="uid://rjvjh5gulqa3" path="res://ExternalAssets/Media/Audio/Sandy Marton - Camel by Camel (Metal Cover by Little V).mp3" id="9_uhyjv"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_35tat"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 4.39
+dof_blur_far_transition = 3.02
+dof_blur_near_enabled = true
+
+[sub_resource type="Animation" id="Animation_e6yrb"]
+resource_name = "Flash"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lightning:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.06, 0.09, 0.13, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5hw1g"]
+_data = {
+"Flash": SubResource("Animation_e6yrb")
+}
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_o37u6"]
+seed = 2
+fractal_octaves = 3
+fractal_lacunarity = 1.0
+fractal_gain = 4.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_aaq5h"]
+in_3d_space = true
+seamless = true
+as_normal_map = true
+bump_strength = 32.0
+noise = SubResource("FastNoiseLite_o37u6")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n5ybh"]
+albedo_color = Color(0.498039, 1, 0.639216, 1)
+metallic_texture_channel = 1
+roughness = 0.54
+roughness_texture = SubResource("NoiseTexture2D_aaq5h")
+rim_enabled = true
+rim = 0.05
+clearcoat_enabled = true
+clearcoat_roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wo4ov"]
+
+[sub_resource type="Gradient" id="Gradient_ihlya"]
+offsets = PackedFloat32Array(0.185102, 0.654628)
+colors = PackedColorArray(0.576471, 0.701961, 1, 1, 1, 0, 0.925595, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_owpnv"]
+gradient = SubResource("Gradient_ihlya")
+
+[sub_resource type="Animation" id="Animation_4iorq"]
+resource_name = "Sway"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraDolly:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 6, 12),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.523599, 0), Vector3(0, 0.523599, 0), Vector3(0, -0.523599, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qw4xu"]
+_data = {
+"Sway": SubResource("Animation_4iorq")
+}
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_qsgkg")
+
+[node name="Ankha" parent="." instance=ExtResource("1_wb4tj")]
+
+[node name="CameraDolly" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.348789, 0)
+
+[node name="Camera" type="Camera3D" parent="CameraDolly"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0.189, 2.384)
+environment = ExtResource("2_gjahs")
+attributes = SubResource("CameraAttributesPractical_35tat")
+current = true
+fov = 55.0
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="Lights"]
+transform = Transform3D(-0.065521, 0.954542, -0.290787, 0.781963, 0.230144, 0.579281, 0.619871, -0.18943, -0.761496, 0, 2.84542, 0)
+light_color = Color(0.380392, 0.47451, 1, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Lightning" type="SpotLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 0.849442, 0.527682, 0, -0.527682, 0.849442, 0, 4.29455, 6.59917)
+visible = false
+light_color = Color(0.996078, 1, 0.745098, 1)
+light_energy = 16.0
+light_specular = 16.0
+spot_range = 76.609
+spot_angle = 151.88
+
+[node name="LightningAnimationPlayer" type="AnimationPlayer" parent="Lights"]
+libraries = {
+"": SubResource("AnimationLibrary_5hw1g")
+}
+
+[node name="LightningTimer" type="Timer" parent="Lights"]
+wait_time = 7.0
+autostart = true
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="World"]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, -5.13558)
+material_override = SubResource("StandardMaterial3D_n5ybh")
+mesh = SubResource("PlaneMesh_wo4ov")
+
+[node name="Grass" type="Node3D" parent="World"]
+
+[node name="GrassPatch" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.20361, 0, -4.50411)
+radius = 2.0
+total_grass_blades = 128
+grass_blade_height = 0.3
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch2" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313979, 0, -4.19303)
+radius = 2.0
+total_grass_blades = 128
+grass_blade_height = 0.3
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch3" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.74769, 0.00542974, -3.09336)
+radius = 2.0
+total_grass_blades = 128
+grass_blade_height = 0.3
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch4" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.93022, 0, -2.25116)
+radius = 2.0
+total_grass_blades = 128
+grass_blade_height = 0.3
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch5" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.10085, 0, -2.25116)
+radius = 2.0
+total_grass_blades = 128
+grass_blade_height = 0.3
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch6" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.42106, 0, -0.266225)
+radius = 2.0
+total_grass_blades = 1024
+grass_blade_height = 0.1
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch7" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.184503, 0, -1.99359)
+radius = 2.0
+total_grass_blades = 1024
+grass_blade_height = 0.05
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch8" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35842, 0, -0.133235)
+radius = 2.0
+total_grass_blades = 1024
+grass_blade_height = 0.1
+wind_speed = 0.15
+grass_color = SubResource("GradientTexture1D_owpnv")
+wind_strength = 1.0
+
+[node name="GrassPatch9" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.595493, 0, -11.9267)
+radius = 6.0
+total_grass_blades = 128
+grass_blade_height = 2.0
+grass_color = SubResource("GradientTexture1D_owpnv")
+
+[node name="GrassPatch10" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.57418, 0, -11.9267)
+radius = 6.0
+total_grass_blades = 128
+grass_blade_height = 2.0
+grass_color = SubResource("GradientTexture1D_owpnv")
+
+[node name="GrassPatch11" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.57907, 0, -11.9267)
+radius = 6.0
+total_grass_blades = 128
+grass_blade_height = 2.0
+grass_color = SubResource("GradientTexture1D_owpnv")
+
+[node name="GrassPatch12" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8694, 0, -6.33397)
+radius = 6.0
+total_grass_blades = 128
+grass_blade_height = 2.0
+grass_color = SubResource("GradientTexture1D_owpnv")
+
+[node name="GrassPatch13" parent="World/Grass" instance=ExtResource("3_5am38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5393, 0, -6.33397)
+radius = 6.0
+total_grass_blades = 128
+grass_blade_height = 2.0
+grass_color = SubResource("GradientTexture1D_owpnv")
+
+[node name="Objects" type="Node3D" parent="World"]
+
+[node name="mushroom_blue" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(1, 0, 0, 0, 0.964622, 0.263637, 0, -0.263637, 0.964622, -4.56845, 0.520705, -4.67389)
+
+[node name="mushroom_blue2" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.994656, -0.103244, 0, 0.103244, 0.994656, 0, 0, 0, 1, -1.40926, 0.520705, -4.67389)
+
+[node name="mushroom_blue3" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(-0.108086, 0, 0.994142, 0, 1, 0, -0.994142, 0, -0.108086, 0.675019, 0.520705, -4.67389)
+
+[node name="mushroom_blue4" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(-0.104604, 0.251765, 0.962119, 0.0272123, 0.967788, -0.25029, -0.994142, 0, -0.108086, 0.675019, 0.520705, -3.05069)
+
+[node name="mushroom_blue5" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(-0.108086, 0, 0.994142, 0, 1, 0, -0.994142, 0, -0.108086, -7.02128, 0.520705, -3.05069)
+
+[node name="mushroom_blue6" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(-0.108086, 0, 0.994142, 0, 1, 0, -0.994142, 0, -0.108086, -7.02128, 0.520705, -6.49866)
+
+[node name="mushroom_blue7" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(-0.108086, 0, 0.994142, 0, 1, 0, -0.994142, 0, -0.108086, 2.54542, 0.520705, -6.49866)
+
+[node name="mushroom_blue8" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.996043, 0, 0.0888768, -0.00394649, 0.999014, 0.0442283, -0.0887892, -0.044404, 0.99506, 4.73586, 0.520705, -3.62235)
+
+[node name="mushroom_blue9" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.996043, 0, 0.0888768, 0, 1, 0, -0.0888768, 0, 0.996043, 5.67885, 0.520705, -3.62235)
+
+[node name="mushroom_blue10" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.996043, 0, 0.0888768, 0, 1, 0, -0.0888768, 0, 0.996043, 5.67885, 0.520705, -1.3193)
+
+[node name="mushroom_blue13" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.969483, -0.229387, 0.086507, 0.22848, 0.973335, 0.0203872, -0.0888768, 0, 0.996043, -1.53685, 0.36834, 0.946523)
+
+[node name="mushroom_blue14" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.909271, 0.408219, 0.0811342, -0.406604, 0.912884, -0.0362812, -0.0888768, 1.81298e-09, 0.996043, -1.19098, 0.36834, 0.946523)
+
+[node name="mushroom_blue15" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.990524, 0.137312, 0.00279676, -0.132951, 0.953563, 0.270264, 0.0344435, -0.268074, 0.962782, -1.32752, 0.277711, 0.811306)
+
+[node name="mushroom_blue11" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.95175, -0.294891, 0.0849246, 0.293724, 0.955531, 0.026209, -0.0888768, 0, 0.996043, 3.57578, 0.520705, -1.3193)
+
+[node name="mushroom_blue12" parent="World/Objects" instance=ExtResource("5_o8jh7")]
+transform = Transform3D(0.944128, -0.117763, -0.307823, 0.111962, 0.993042, -0.036504, 0.30998, 0, 0.950743, 0.435896, 0.520705, -2.41357)
+
+[node name="mushroom_log" parent="World/Objects" instance=ExtResource("6_ifq0w")]
+transform = Transform3D(0.62606, 0, -0.779775, 0, 1, 0, 0.779775, 0, 0.62606, -3.95836, 0.597867, -1.21772)
+
+[node name="mushroom_log_red" parent="World/Objects" instance=ExtResource("7_kxsb4")]
+transform = Transform3D(-0.383748, -0.0398702, -0.922577, -0.0153123, 0.999205, -0.0368126, 0.923311, 0, -0.384054, 4.62546, 0.619283, -2.81023)
+
+[node name="mushroom_red_small" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 0.989626, -0.143665, 0, 0.143665, 0.989626, -1.34058, 0.232585, -1.99019)
+
+[node name="mushroom_red_small2" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1695, 0.232585, -1.99019)
+
+[node name="mushroom_red_small3" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.55093, 0.232585, -0.0369325)
+
+[node name="mushroom_red_small4" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.70749, 0.232585, -0.0369325)
+
+[node name="mushroom_red_small5" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.70749, 0.232585, -3.86952)
+
+[node name="mushroom_red_small6" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.97814, 0.232585, -3.86952)
+
+[node name="mushroom_red_small7" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(0.982317, -0.187227, 0, 0.187227, 0.982317, 0, 0, 0, 1, -1.36503, 0.232585, -3.86952)
+
+[node name="mushroom_red_small8" parent="World/Objects" instance=ExtResource("8_xadp3")]
+transform = Transform3D(0.980118, 0.108532, 0.166098, -0.036835, 0.92211, -0.38517, -0.194964, 0.371394, 0.907775, -1.78128, 0.232585, -3.42857)
+
+[node name="CameraAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qw4xu")
+}
+
+[node name="MainMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_uhyjv")
+volume_db = -7.0
+autoplay = true
+
+[connection signal="timeout" from="Lights/LightningTimer" to="." method="_on_lightning_timer_timeout"]

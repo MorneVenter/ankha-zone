@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ctexapt1ajq08"
+uid="uid://fxji65x8pjtr"
 path="res://.godot/imported/ankha.blend-6625c5bba7d1967c32c07de337c726ed.scn"
 
 [deps]
@@ -24,9 +24,24 @@ meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
 skins/use_named_skins=true
 animation/import=true
-animation/fps=30
+animation/fps=25.0
 import_script/path=""
-_subresources={}
+_subresources={
+"animations": {
+"Dance": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+},
+"MeowDance": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+}
+}
+}
 blender/nodes/visible=2
 blender/nodes/punctual_lights=true
 blender/nodes/cameras=true

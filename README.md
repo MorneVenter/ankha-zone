@@ -1,5 +1,7 @@
 # Ankha Zone
 
+<img src="./ankha.png" alt="ankha" width="700"/>
+
 ## Software Kit
 
 ![Blender](https://img.shields.io/badge/blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white)

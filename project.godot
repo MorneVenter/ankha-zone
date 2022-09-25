@@ -28,13 +28,15 @@ gdscript/warnings/unused_class_variable=true
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/vsync/vsync_mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
 
 [editor]
 
+movie_writer/movie_file="/Users/morne/Documents/Godot Projects/ankha-zone/Output/ankha.avi"
 script_templates_search_path="res://.script_templates"
 
 [editor_plugins]
@@ -48,5 +50,4 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 scaling_3d/mode=1
-anti_aliasing/quality/msaa_3d=1
 environment/default_environment="res://default_env.tres"

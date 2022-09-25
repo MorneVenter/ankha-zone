@@ -102,6 +102,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.348789, 0)
 
 [node name="Camera" type="Camera3D" parent="CameraDolly"]
 transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0.189, 2.384)
+visible = false
 environment = ExtResource("2_gjahs")
 attributes = SubResource("CameraAttributesPractical_35tat")
 current = true
